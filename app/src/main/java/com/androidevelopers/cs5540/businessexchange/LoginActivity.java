@@ -2,9 +2,9 @@ package com.androidevelopers.cs5540.businessexchange;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -17,19 +17,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button buttonCreateAccount;
-    private EditText editTextEmail;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Button buttonLogin;
+    private EditText editTextUsername;
     private EditText editTextPassword;
-    private TextView textViewGoToLogin;
+    private TextView textViewGoToCreateAccount;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null) {
@@ -40,32 +41,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         progressDialog = new ProgressDialog (this);
 
-        buttonCreateAccount = (Button) findViewById(R.id.bt_create_account);
-        editTextEmail = (EditText) findViewById(R.id.et_create_email);
-        editTextPassword = (EditText) findViewById(R.id.et_create_password);
-        textViewGoToLogin = (TextView) findViewById(R.id.tv_go_to_login);
+        buttonLogin = (Button) findViewById(R.id.bt_login);
+        editTextUsername = (EditText) findViewById(R.id.et_email);
+        editTextPassword = (EditText) findViewById(R.id.et_password);
+        textViewGoToCreateAccount = (TextView) findViewById(R.id.tv_go_to_create_account);
 
-        buttonCreateAccount.setOnClickListener(this);
-        textViewGoToLogin.setOnClickListener(this);
+        buttonLogin.setOnClickListener(this);
+        textViewGoToCreateAccount.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if(v == textViewGoToLogin) {
-            startActivity(new Intent(this, LoginActivity.class));
+        if(v == textViewGoToCreateAccount) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
         }
 
-        if(v == buttonCreateAccount) createAccount();
+        if(v == buttonLogin) userLogin();
     }
 
-    private void createAccount() {
-
-        String email = editTextEmail.getText().toString().trim();
+    private void userLogin() {
+        String email = editTextUsername.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)){
             //username field empty
-            Toast.makeText(this,"Please enter your email address",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please enter your email address", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -76,25 +77,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //if fields have entries
-        progressDialog.setMessage("Creating a user account...");
+        progressDialog.setMessage("Logging In...");
         progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(email,password)
+        firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> authResultTask) {
                         progressDialog.dismiss();
-                        if(authResultTask.isSuccessful()) {
-                            //successful account created
-                            //start users profile activity
+                        if(authResultTask.isSuccessful()){
+                            //start users provile activity
                             finish();
                             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                        }else {
-                            Toast.makeText(MainActivity.this, "Failed To Create Account", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
-
-
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidevelopers.cs5540.businessexchange.MainActivity">
+    tools:context="com.androidevelopers.cs5540.businessexchange.LoginActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,7 +14,7 @@
         <EditText
             android:inputType="textEmailAddress"
             android:hint="Enter your email address"
-            android:id="@+id/et_create_email"
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"/>
@@ -22,21 +22,21 @@
         <EditText
             android:inputType="textPassword"
             android:hint="Enter your password"
-            android:id="@+id/et_create_password"
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"/>
 
         <Button
-            android:id="@+id/bt_create_account"
-            android:text="Create Account"
+            android:id="@+id/bt_login"
+            android:text="Log In"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"/>
 
         <TextView
-            android:id="@+id/tv_go_to_login"
-            android:text="Click here to go to Log In Page."
+            android:id="@+id/tv_go_to_create_account"
+            android:text="Click here to Create Account."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
