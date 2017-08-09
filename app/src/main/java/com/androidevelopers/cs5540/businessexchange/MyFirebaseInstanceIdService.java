@@ -17,5 +17,10 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
         String recentToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(REG_TOKEN,recentToken);
+        sendRegistrationToServer(recentToken);
+    }
+
+    private void sendRegistrationToServer(String token) {
+        // TODO: Implement this method to send token to your app server.
     }
 }
